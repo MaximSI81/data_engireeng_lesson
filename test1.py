@@ -1,10 +1,21 @@
-def standard_deviation(data):
-    data = data.split()
-    average_value = sum(map(int, data)) / len(data)
-    n = 0
-    for i in data:
-        n += (int(i) - average_value)**2
-    sd = (n / (len(data) - 1)) ** 0.5
-    return round(sd, 2)
+import time
 
-print(standard_deviation('1 5 2 7 1 9 3 8 5 9 10 11'))
+import requests
+import json
+import datetime
+
+
+curr = 'RUB,GBP,EUR'
+start_date = datetime.date(year=2015, month=7, day=10)
+end_date = datetime.date(year=2024, month=7, day=10)
+
+api_key = 'd570f2a79f438392960a9932dfcfeb07'
+for i in range(1,10):
+    link = (f'http://api.currencylayer.com/change?access_key={api_key}'
+            f'&currencies={curr}&start_date={start_date + datetime.timedelta(days=i)}'
+            f'&end_date={end_date + datetime.timedelta(days=i)}')
+    time.sleep(1)
+
+    r = requests.get(url=link)
+    print(r.json().get('quotes').get('USDRUB').get('start_rate'))
+    print(r.json().get('quotes').get('USDRUB').get('end_rate'))
